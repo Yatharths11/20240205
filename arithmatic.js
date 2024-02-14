@@ -1,4 +1,4 @@
-class InfiniteNumberAritmatic {
+class InfiniteNumberArithmatic {
 
     /** An internal member Array to contain the digits of the Infinite Integer.
      * @private
@@ -65,11 +65,11 @@ class InfiniteNumberAritmatic {
         // initialize the member array
         this._internalArray = inputObject
   
-      } else if (typeof inputObject === "object") {  // IS THIS HOW ITS DONE?
+      } else if (typeof inputObject === "object") {  
         console.log("You sent an Object")
   
         // TODO check if this object has getInternalArray() and make a deep copy
-        if(typeof(inputObject.getInternalArray())==InfiniteNumberAritmatic){
+        if(typeof(inputObject.getInternalArray())==InfiniteNumberArithmatic){
         // and assign it to local _internalArray
           this._internalArray=inputObject.getInternalArray();
         // initialize the member array
@@ -245,25 +245,116 @@ class InfiniteNumberAritmatic {
       return ans.reverse()
     }
 
-    multiply(){
-      //some errors are yet to resolve
+    /**subFuntion to multiply one number with entire array
+   * @private 
+   * @param {Number} num to be multiplied
+   * @param {Array<Number>} numArray to be multiplied
+   * @return {Array} Array after multiplication
+   */
+  multiplyWithNumber(numArray, num, initialZero) {
+    let ans = [];
+    let carry = 0;
+  
+    //to append initial zero for final calculation
+    for (let zeroCount = 0; zeroCount < initialZero; zeroCount++) {
+      ans.unshift(0);
+    }
+    for (let numIndex = numArray.length - 1; numIndex >= 0; numIndex--) {
+      let temp = (numArray[numIndex] * num) + carry;
+      ans.unshift(temp%10);
+      carry = Math.floor(temp/10);
+    }
+    if(carry!==0) ans.unshift(carry)
+    return ans;
+  }
+  
+  /**Function to return the multiplication of two Arrays
+   * @param {Array<Number>} numToMultiply input array should be number
+   * @throws {Error} if numToMultiply is not valid object
+   * @return {Array} result array of Multiplication
+   */
+  getmultiplication(numToMultiply) {
+    console.log(numToMultiply instanceof InfiniteNumberArithmatic)
+
+    //check if the input is valid
+    if(!(numToMultiply instanceof InfiniteNumberArithmatic)){
+      throw new Error("given input is not an object")
     }
 
-    divide(){
-      //some errors are yet to resolve
+    let num1=this._internalArray
+    let num2=numToMultiply._internalArray;
+
+    //initialize the ans as object
+    let ans = new InfiniteNumberArithmatic(0);
+  
+    //multiply entire num1 array with elemetents of num2 array one by one 
+    // then add it to the ans 
+    let num2Index = (num2.length - 1)
+    for (; num2Index >= 0; num2Index--) {
+      // initial zeros to be added
+      let initialZero = (num2.length - 1) - num2Index;
+
+      // multiply num1 with single digit of num2 and store into sample
+      let sample= this.multiplyWithNumber(num1,num2[num2Index],initialZero);
+
+      //convert sample into infiniteNumber object
+      sample= new InfiniteNumberArithmatic(sample.join(""))
+
+      // add the ans object with sample object and convert ans again into object
+      ans=ans.getaddition(sample)
+      ans = new InfiniteNumberArithmatic(ans.join(""));
+    }
+    return ans;
+  }
+    divide(obj){
+      //some features are yet to be added
+      let biggerNumber;
+      let smallerNumber;
+      let first = this._internalArray;
+      let second = obj.getInternalArray();
+        // checking which numeber bigger 
+        if(first.length > second.length){
+            biggerNumber = first
+            smallerNumber = second
+    
+        }else if(first.length == second.length){
+    
+            //Comparing each digit to find the bigger number 
+            for(let i=0;i<first.length;i++){
+    
+                //if any one digit of first number becomes larger than the 
+                //digit at same place in second numeber, the first number becomes 
+                //the bigger number
+                if(first[i]>second[i]){
+                    biggerNumber = first
+                    smallerNumber = second
+                    break
+                }
+                if(second[i]>first[i]){
+                    biggerNumber = second
+                    smallerNumber = first
+                    break
+                }
+            }
+        }else {
+            //condition where the second number is larger than the first number
+            biggerNumber = second
+            smallerNumber = first
+        }
     }
 }
 
 
 function testing(){
   
-    let obj1 = new InfiniteNumberAritmatic(68568526)
-    let obj2 = new InfiniteNumberAritmatic(94646466)
+  let obj1 = new InfiniteNumberArithmatic(68568526)
+  let obj2 = new InfiniteNumberArithmatic(94646466)
 
-    let obj3 = new InfiniteNumberAritmatic(obj1.getaddition(obj2))
-    console.log("Addition : ",obj3.getNumberAsString())
-    let obj4 = new InfiniteNumberAritmatic(obj2.getsubtraction(obj1))
-    console.log("Subtraction : ",obj4.getNumberAsString())
+  let obj3 = new InfiniteNumberArithmatic(obj1.getaddition(obj2))
+  console.log("Addition : ",obj3.getNumberAsString())
+  let obj4 = new InfiniteNumberArithmatic(obj2.getsubtraction(obj1))
+  console.log("Subtraction : ",obj4.getNumberAsString())
+  // let obj5 = new InfiniteNumberArithmatic(obj1.getmultiplication(obj2))
     
 }
 
