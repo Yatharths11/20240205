@@ -71,14 +71,13 @@ function getSimple2sCompliment(number,numLength){
     
 }
 
-console.log(getSimple2sCompliment(-1,16))
 
 
 
 /**
  * Function to convert a binary code to decimal 
  * @param {String} binary - The binary string you want to convert
- * @returns {Number}
+ * @returns {Number} a negative or positive number representing the inputted binary
 */
 function getSimplDecimalFrom2sCompliment(binary){
     let num =0 
@@ -98,6 +97,9 @@ function getSimplDecimalFrom2sCompliment(binary){
     return num*sign
 }
 
+/**
+ * Function for testing the created functions created above
+ */
 function testing(){
     console.log(getSimple2sCompliment(9,"16"))
     console.log(getSimple2sCompliment(83,12))
@@ -107,3 +109,5 @@ function testing(){
     console.log(getSimplDecimalFrom2sCompliment("11011010"))
     console.log(getSimplDecimalFrom2sCompliment("01100010"))
 }
+
+testing()
